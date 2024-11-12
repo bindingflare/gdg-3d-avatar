@@ -21,24 +21,16 @@ jobs:
       - name: Install Deno
         uses: denoland/setup-deno@v2
         with:
-          deno-version: v1.x
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-
-      - name: Install step
-        run: "cd gdg-3d-avatar-fe && deno install"
+          deno-version: v2.x
 
       - name: Build step
-        run: "cd gdg-3d-avatar-fe && deno run build"
+        run: "cd gdg-3d-avatar-fe && deno task build"
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
           project: "junb-gdg-3d-avat-79"
-          entrypoint: "gdg-3d-avatar-fe/dist/index.html"
+          entrypoint: "jsr:@std/http@1.0.0-rc.5/file-server"
           root: "gdg-3d-avatar-fe/dist"
           
           
