@@ -38,7 +38,7 @@ jobs:
         uses: denoland/deployctl@v1
         with:
           project: "junb-gdg-3d-avat-79"
-          entrypoint: "gdg-3d-avatar-fe/main.tsx"
+          entrypoint: "gdg-3d-avatar-fe/src/main.tsx"
           root: "gdg-3d-avatar-fe/dist"
           
           
