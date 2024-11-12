@@ -6,6 +6,10 @@
 ```
 cd gdg-3d-avatar-fe
 ```
+2. Update packages
+```
+deno install
+```
 3. run dev server
 ```
 deno task dev
