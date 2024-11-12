@@ -29,10 +29,10 @@ jobs:
           node-version: lts/*
 
       - name: Install step
-        run: "cd gdg-3d-avatar-fe && npm install"
+        run: "cd gdg-3d-avatar-fe && deno install"
 
       - name: Build step
-        run: "cd gdg-3d-avatar-fe && npm run build"
+        run: "cd gdg-3d-avatar-fe && deno run build"
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
