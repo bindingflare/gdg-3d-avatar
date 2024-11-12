@@ -1,20 +1,29 @@
-// src/create.tsx
+import Wrapper from "./components/wrapper";
+import Header from "./components/header";
+import Footer from "./components/footer";
+import GradientBackground from "./components/gradientBg";
+import InputPrompt from "./components/create/inputPrompt";
 
 function Create() {
   return (
     <>
-      <h1>3D Model and User Input</h1>
-      <div className="container">
-
-          <div className="input-area">
-              <input id="user-text" type="text" placeholder="Enter your description"/>
-              <input id="submit-button" type="submit" value="Submit"/>
-          </div>
-
-          <div id="three-container"></div>
+      <Header />
+      {/* <div
+        id="three-container"
+        className="w-screen h-screen fixed top-[90px] bg-gray-200 mx-auto rounded-[16px]"
+      ></div> */}
+      <div id="main" className="fixed w-screen h-screen">
+        <GradientBackground />
       </div>
+      <div className="pt-[90px]">
+
+      </div>
+      <Wrapper>
+        <InputPrompt />
+      </Wrapper>
+      <Footer />
     </>
-  )
+  );
 }
 
-export default Create
+export default Create;
