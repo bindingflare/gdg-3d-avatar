@@ -19,7 +19,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'index.html'),
-        create: path.resolve(__dirname, 'src/pages/create/index.html'),
+        create: path.resolve(__dirname, 'create/index.html'),
       },
     },
   },
