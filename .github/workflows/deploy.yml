@@ -32,13 +32,13 @@ jobs:
         run: "cd gdg-3d-avatar-fe && deno install"
 
       - name: Build step
-        run: "cd gdg-3d-avatar-fe && deno task build"
+        run: "deno task build"
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
           project: "junb-gdg-3d-avat-79"
-          entrypoint: "gdg-3d-avatar-fe/src/main.tsx"
+          entrypoint: "gdg-3d-avatar-fe/src/index.html"
           root: "cd gdg-3d-avatar-fe/dist"
           
           
