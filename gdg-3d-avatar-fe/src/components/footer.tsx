@@ -2,7 +2,7 @@
 import React, { FC } from "react";
 import Wrapper from "./wrapper";
 
-const Footer: FC = () => {
+function Footer() {
   return (
     <footer className="p-2 z-30" style={styles.footer}>
       <Wrapper>
@@ -12,7 +12,7 @@ const Footer: FC = () => {
       </Wrapper>
     </footer>
   );
-};
+}
 
 const styles: { [key: string]: React.CSSProperties } = {
   footer: {
@@ -23,9 +23,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     bottom: 0,
     width: "100%",
   },
-  footerMenu: {
-
-  }
+  footerMenu: {},
 };
 
 export default Footer;
