@@ -26,14 +26,14 @@ const GradientBackground: FC = () => {
 
   return (
     <div
-      className={`w-full h-screen transition-colors duration-300`}
+      className={`w-screen h-screen absolute transition-colors duration-300`}
       style={{
         backgroundImage: `radial-gradient(${gradient})`,
       }}
       onMouseMove={handleMouseMove}
     >
-      <div className="text-white/65 text-center top-1/2 fixed w-full">
-        <h1 className="text-3xl mx-auto">
+      <div className="text-white/25 text-center top-[85%] fixed w-full">
+        <h1 className="text-6xl mx-auto">
           Move your cursor around!
         </h1>
       </div>
