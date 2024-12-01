@@ -2,7 +2,6 @@ import Wrapper from "./components/wrapper";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import GradientBackground from "./components/gradientBg";
-import InputPrompt from "./components/create/inputPrompt";
 
 function Create() {
   return (
@@ -19,7 +18,8 @@ function Create() {
 
       </div>
       <Wrapper>
-        <InputPrompt />
+        <div id="three-container" className={`w-screen h-screen fixed top-[90px] bg-gray-300 z-10 transition-all ease-in-out duration-500 pointer-events-auto`}>
+        </div>
       </Wrapper>
       <Footer />
     </>

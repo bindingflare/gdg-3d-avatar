@@ -21,7 +21,7 @@ const GradientBackground: FC = () => {
     const newGradient = `circle at ${xPercent}% ${yPercent}%, rgb(${r1}, ${g1}, ${b1}), rgb(${r2}, ${g2}, ${b2})`;
     setGradient(newGradient);
 
-    console.log("Set gradient to " + newGradient + "!");
+    //console.log("Set gradient to " + newGradient + "!");
   };
 
   return (
