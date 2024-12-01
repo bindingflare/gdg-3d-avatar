@@ -1,11 +1,8 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 
 const InputPrompt: FC = () => {
-  const [isVisible, setVisible] = useState(true);
-
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setVisible(false);
 
     console.log("Removing prompt!");
   };

@@ -1,5 +1,5 @@
 // src/Footer.js
-import React, { FC } from "react";
+import React from "react";
 import Wrapper from "./wrapper";
 
 function Footer() {
