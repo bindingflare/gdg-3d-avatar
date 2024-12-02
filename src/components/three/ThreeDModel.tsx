@@ -184,29 +184,34 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
 
   const startCircularAnimation = (center: THREE.Vector3) => {
     const clock = new THREE.Clock();
-
+  
     const animateCircularMotion = () => {
       requestAnimationFrame(animateCircularMotion);
-
+  
       if (cameraRef.current && modelRef.current) {
         const elapsedTime = clock.getElapsedTime();
-
+  
         // Calculate new camera position in a circular path
         const radius = 5; // Distance from the model
-        const speed = 0.5; // Speed of rotation (radians per second)
-
-        const x = center.x + radius * Math.cos(speed * elapsedTime);
-        const z = center.z + radius * Math.sin(speed * elapsedTime);
-
+        const speed = 0.2; // Reduced speed for smoother motion
+  
+        // Use easing-like effect by modulating speed over time
+        const angle = speed * elapsedTime + 70;
+        const x = center.x + radius * Math.cos(angle);
+        const z = center.z + radius * Math.sin(angle);
+  
+        // Set camera position and look at the model's center
         cameraRef.current.position.set(x, center.y + 2, z);
         cameraRef.current.lookAt(center);
-
+  
+        // Render the scene
         rendererRef.current.render(sceneRef.current!, cameraRef.current!);
       }
     };
-
+  
     animateCircularMotion();
   };
+  
 
   return <div className="z-10 absolute pointer-events-none" ref={mountRef} />;
 };
