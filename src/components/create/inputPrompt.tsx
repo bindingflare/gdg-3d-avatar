@@ -2,65 +2,22 @@ import { FC } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
 
-const InputPrompt: FC = () => {
-  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+interface InputPromptProps {
+  onSubmit: (description: string) => void;
+}
+
+const InputPrompt: FC<InputPromptProps> = ({onSubmit}: InputPromptProps) => {
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    const text = formData.get("user-text");
+    const description = formData.get("user-text") as string;
 
-    console.log("Sending prompt " + text + "!");
-
-    try {
-      const response = await fetch(
-        "https://autopilot-garlic.kro.kr/api/find-matching-avatar",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ text: text }),
-        }
-      );
-
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
-
-        // Load the GLTF model using Three.js
-        const loader = new GLTFLoader();
-        loader.load(url, (gltf) => {
-          const scene = new THREE.Scene();
-          scene.add(gltf.scene);
-
-          // Set up camera, renderer, and any other Three.js components here
-          const camera = new THREE.PerspectiveCamera(
-            75,
-            window.innerWidth / window.innerHeight,
-            0.1,
-            1000
-          );
-          camera.position.z = 5;
-
-          const renderer = new THREE.WebGLRenderer();
-          renderer.setSize(window.innerWidth, window.innerHeight);
-          document.body.appendChild(renderer.domElement);
-
-          const animate = () => {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
-          };
-
-          animate();
-        });
-      } else {
-        console.error("Failed to fetch GLTF file");
-      }
-    } catch (error) {
-      console.error("Error:", error);
+    if (description) {
+      onSubmit(description);
+    } else {
+      console.error("Description is null or empty");
     }
-
-    console.log("Removing prompt!");
   };
 
   return (

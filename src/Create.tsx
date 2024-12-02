@@ -12,13 +12,20 @@ function Create() {
         className="w-screen h-screen fixed top-[90px] bg-gray-200 mx-auto rounded-[16px]"
       ></div> */}
       <div id="main" className="fixed w-screen h-screen">
-        <GradientBackground />
+        <GradientBackground text={"Welcome the TEAM"} />
       </div>
       <div className="pt-[90px]">
 
       </div>
       <Wrapper>
-        <div id="three-container" className={`w-screen h-screen fixed top-[90px] bg-gray-300 z-10 transition-all ease-in-out duration-500 pointer-events-auto`}>
+        <div className="z-10">
+          <h2>Made by:</h2>
+          <ul>
+            <li>정준우</li>
+            <li>백승우</li>
+            <li>방준현</li>
+            <li>이창연</li>
+          </ul>
         </div>
       </Wrapper>
       <Footer />

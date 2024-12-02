@@ -1,6 +1,10 @@
 import { FC, MouseEventHandler, useState } from "react";
 
-const GradientBackground: FC = () => {
+interface GradientBackgroundProps {
+  text: string;
+}
+
+const GradientBackground: FC<GradientBackgroundProps> = ({text}: GradientBackgroundProps) => {
   const [gradient, setGradient] = useState("circle at 50% 10%, rgb(128, 40, 128), rgb(128, 214, 128)"); // set initial value
 
   const handleMouseMove: MouseEventHandler<HTMLDivElement> = (e) => {
@@ -32,9 +36,9 @@ const GradientBackground: FC = () => {
       }}
       onMouseMove={handleMouseMove}
     >
-      <div className="text-white/25 text-center top-[85%] fixed w-full">
-        <h1 className="text-6xl mx-auto">
-          Move your cursor around!
+      <div className="text-white/25 text-center top-[70%] fixed w-full">
+        <h1 className="text-8xl mx-auto italic font-semibold overflow-hidden text-nowrap">
+          {text}
         </h1>
       </div>
     </div>
