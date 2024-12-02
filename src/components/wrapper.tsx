@@ -20,8 +20,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: "center",
     margin: "auto",
     gap: "16px",
-    padding: "20px 0",
-    zIndex: "10",
+    padding: "20px 0"
   },
 };
 

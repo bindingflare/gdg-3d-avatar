@@ -1,10 +1,21 @@
 import { FC } from "react";
 
-const InputPrompt: FC = () => {
+interface InputPromptProps {
+  onSubmit: (description: string) => void;
+}
+
+const InputPrompt: FC<InputPromptProps> = ({onSubmit}: InputPromptProps) => {
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    console.log("Removing prompt!");
+    const formData = new FormData(event.currentTarget);
+    const description = formData.get("user-text") as string;
+
+    if (description) {
+      onSubmit(description);
+    } else {
+      console.error("Description is null or empty");
+    }
   };
 
   return (
@@ -15,6 +26,7 @@ const InputPrompt: FC = () => {
         <form className="my-1.5" onSubmit={handleFormSubmit}>
           <input
             id="user-text"
+            name="user-text"
             type="text"
             placeholder="Enter your description"
             className="w-full p-2 mb-2 border border-gray-400 rounded"

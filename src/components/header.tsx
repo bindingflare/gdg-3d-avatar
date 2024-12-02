@@ -13,13 +13,10 @@ const Header: FC = () => {
             <nav>
               <ul className="flex space-x-4 list-none m-0 p-0">
                 <li>
-                  <a href="/" className="hover:text-gray-300">Home</a>
+                  <a href="/" className="hover:text-gray-300">Start Over</a>
                 </li>
                 <li>
-                  <a href="/create/" className="hover:text-gray-300">Create</a>
-                </li>
-                <li>
-                  <a href="/credits/" className="hover:text-gray-300">Credits</a>
+                  <a href="/create/" className="hover:text-gray-300">Credits</a>
                 </li>
               </ul>
             </nav>
