@@ -23,6 +23,14 @@ body {
   background-color: #f4f4f4;
 }
 
+h2 {
+  margin: 4px;
+}
+
+li {
+  padding: 4px;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

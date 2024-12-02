@@ -37,7 +37,7 @@ const GradientBackground: FC<GradientBackgroundProps> = ({text}: GradientBackgro
       onMouseMove={handleMouseMove}
     >
       <div className="text-white/25 text-center top-[70%] fixed w-full">
-        <h1 className="text-8xl mx-auto italic font-semibold overflow-hidden text-nowrap">
+        <h1 className="text-7xl mx-auto italic font-semibold overflow-hidden text-nowrap">
           {text}
         </h1>
       </div>

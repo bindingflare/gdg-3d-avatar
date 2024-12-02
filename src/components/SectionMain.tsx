@@ -27,7 +27,7 @@ const SectionMain: FC = () => {
         const blob = await response.blob();
         const url = URL.createObjectURL(blob);
         setGltfUrl(url); // Store the URL in state
-        setSpoilerText(`${text}~ ${text}! ${text}.. ${text}!! ${text}? ${text}`);
+        setSpoilerText(`${text}~ ${text}!! ${text}.. ${text}? ${text}`);
       } else {
         console.error("Failed to fetch GLTF file");
       }
