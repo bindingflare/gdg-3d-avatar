@@ -5,6 +5,7 @@ import InputPrompt from "./create/inputPrompt";
 
 const SectionMain: FC = () => {
   const [isInputVisible, setIsInputVisible] = useState(false);
+  const [gltfUrl, setGltfUrl] = useState<string | null>(null);
 
   return (
     <>
