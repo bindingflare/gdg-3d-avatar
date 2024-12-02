@@ -1,11 +1,18 @@
 import { FC, MouseEventHandler, useState } from "react";
+import Marquee from "react-fast-marquee";
 
 interface GradientBackgroundProps {
   text: string;
 }
 
-const GradientBackground: FC<GradientBackgroundProps> = ({text}: GradientBackgroundProps) => {
-  const [gradient, setGradient] = useState("circle at 50% 10%, rgb(128, 40, 128), rgb(128, 214, 128)"); // set initial value
+const GradientBackground: FC<GradientBackgroundProps> = ({
+  text,
+}: GradientBackgroundProps) => {
+  const [gradient, setGradient] = useState(
+    "circle at 50% 10%, rgb(128, 40, 128), rgb(128, 214, 128)"
+  );
+
+  const speed = text.length > 20 ? 10 : 0;
 
   const handleMouseMove: MouseEventHandler<HTMLDivElement> = (e) => {
     const { innerWidth, innerHeight } = window;
@@ -37,9 +44,17 @@ const GradientBackground: FC<GradientBackgroundProps> = ({text}: GradientBackgro
       onMouseMove={handleMouseMove}
     >
       <div className="text-white/25 text-center top-[70%] fixed w-full">
-        <h1 className="text-7xl mx-auto italic font-semibold overflow-hidden text-nowrap">
-          {text}
-        </h1>
+        {speed == 0 ? (
+          <h1 className="text-7xl mx-auto italic font-semibold overflow-hidden text-nowrap">
+            {text}
+          </h1>
+        ) : (
+          <Marquee className="align-middle" speed={speed}>
+            <h1 className="text-7xl mx-auto italic font-semibold overflow-hidden text-nowrap">
+              {text}
+            </h1>
+          </Marquee>
+        )}
       </div>
     </div>
   );

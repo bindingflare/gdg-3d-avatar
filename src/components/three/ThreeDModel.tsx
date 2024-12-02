@@ -16,6 +16,7 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const modelRef = useRef<THREE.Object3D | null>(null);
 
   // Function to center and position a model
   const centerAndPositionModel = (model: THREE.Object3D) => {
@@ -154,6 +155,7 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
       loader.load(gltfUrl, (gltf) => {
         const newModel = gltf.scene;
         sceneRef.current!.add(newModel);
+        modelRef.current = newModel;
 
         // Center and position the new model
         centerAndPositionModel(newModel);
@@ -172,10 +174,39 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
           onUpdate: () => {
             cameraRef.current!.lookAt(center);
           },
+          onComplete: () => {
+            startCircularAnimation(center);
+          }
         });
       });
     }
   }, [gltfUrl]);
+
+  const startCircularAnimation = (center: THREE.Vector3) => {
+    const clock = new THREE.Clock();
+
+    const animateCircularMotion = () => {
+      requestAnimationFrame(animateCircularMotion);
+
+      if (cameraRef.current && modelRef.current) {
+        const elapsedTime = clock.getElapsedTime();
+
+        // Calculate new camera position in a circular path
+        const radius = 5; // Distance from the model
+        const speed = 0.5; // Speed of rotation (radians per second)
+
+        const x = center.x + radius * Math.cos(speed * elapsedTime);
+        const z = center.z + radius * Math.sin(speed * elapsedTime);
+
+        cameraRef.current.position.set(x, center.y + 2, z);
+        cameraRef.current.lookAt(center);
+
+        rendererRef.current.render(sceneRef.current!, cameraRef.current!);
+      }
+    };
+
+    animateCircularMotion();
+  };
 
   return <div className="z-10 absolute pointer-events-none" ref={mountRef} />;
 };

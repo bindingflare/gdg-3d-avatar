@@ -1,6 +1,4 @@
 import { FC } from "react";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import * as THREE from "three";
 
 interface InputPromptProps {
   onSubmit: (description: string) => void;
