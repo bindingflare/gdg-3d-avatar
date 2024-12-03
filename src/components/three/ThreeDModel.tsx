@@ -131,7 +131,7 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
           duration: 1.5,
           x: targetPosition.x,
           y: targetPosition.y,
-          z: targetPosition.z + 3,
+          z: targetPosition.z + 4.5,
           onUpdate: () => {
             camera.lookAt(targetPosition);
           },
@@ -217,7 +217,7 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
         const z = center.z + radius * Math.sin(angle);
 
         // Set camera position and look at the model's center
-        cameraRef.current.position.set(x, center.y + 2, z);
+        cameraRef.current.position.set(x, center.y + 1.8, z);
         cameraRef.current.lookAt(center);
 
         // Render the scene
