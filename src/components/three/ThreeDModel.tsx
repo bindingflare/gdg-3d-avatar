@@ -144,6 +144,17 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
 
     window.addEventListener("click", onMouseClick);
 
+    function onWindowResize() {
+      // Update camera aspect ratio and projection matrix
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+    
+      // Update renderer size
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    window.addEventListener('resize', onWindowResize, false);
+
     // Clean up on unmount
     return () => {
       if (mountRef.current && rendererRef.current) {
