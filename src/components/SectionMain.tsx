@@ -3,6 +3,7 @@ import GradientBackground from "./gradientBg";
 import ThreeDModel from "./three/ThreeDModel";
 import InputPrompt from "./create/inputPrompt";
 import Header from "./header";
+import gdglogo from "../assets/gdgyonsei-logo.svg";
 
 const SectionMain: FC = () => {
   const [isHeaderVisible, setIsHeaderVisible] = useState(false);
@@ -70,53 +71,54 @@ const SectionMain: FC = () => {
           setHeaderVisible={setIsHeaderVisible}
           isResultVisible={isResultVisible}
         />
-          <div className="relative w-[1280px] max-w-full sm:max-w-[85vw] md:max-w-[70vw] mx-auto">
-            <div className="absolute top-[10vh] lg:top-[8vh]">
-              <div className="h-[5vh] pointer-events-none"></div>
+        <div className="relative w-[1280px] max-w-full sm:max-w-[85vw] md:max-w-[70vw] mx-auto">
+          <div className="absolute top-[10vh] lg:top-[8vh]">
+            <div className="h-[5vh] pointer-events-none"></div>
+            <div
+              className={`w-full z-10 relative text-start pointer-events-none`}
+            >
               <div
-                className={`w-full z-10 relative text-start pointer-events-none`}
+                className={`basic-animation ${
+                  isHeaderVisible ? "opacity-0" : ""
+                }`}
               >
-                <div
-                  className={`basic-animation ${
-                    isHeaderVisible ? "opacity-0" : ""
-                  }`}
-                >
-                  <h2 className="korean">
-                    텍스트로 뽑는 당신의 캐릭터 자판기,{" "}
+                <h2 className="korean">텍스트로 뽑는 당신의 캐릭터 자판기, </h2>
+                <div>
+                  <h2 className="text-7xl lg:text-8xl xl:text-9xl">
+                    Text to Avatar
                   </h2>
-                  <div>
-                    <h2 className="text-7xl lg:text-8xl xl:text-9xl">
-                      Text to Avatar
+                </div>
+              </div>
+              {isResultVisible ? (
+                <></>
+              ) : (
+                <>
+                  <div
+                    className={`basic-animation ${
+                      delayedHeaderVisible ? "mt-[10vh]" : "opacity-0"
+                    }`}
+                  >
+                    <h2 className="korean">
+                      간단한 텍스트를 입력해 나만의 캐릭터를 만들어보세요!
                     </h2>
                   </div>
-                </div>
-                {isResultVisible ? (
-                  <></>
-                ) : (
-                  <>
-                    <div
-                      className={`basic-animation ${
-                        delayedHeaderVisible ? "mt-[10vh]" : "opacity-0"
-                      }`}
-                    >
-                      <h2 className="korean">
-                        간단한 텍스트를 입력해 나만의 캐릭터를 만들어보세요!
-                      </h2>
-                    </div>
-                    <div
-                      className={`m-4 relative basic-animation top-0 ${
-                        isInputVisible
-                          ? "max-h-[33vh] opacity-100"
-                          : "max-h-0 opacity-0 top-[-20vh]"
-                      }`}
-                    >
-                      <InputPrompt onSubmit={handleFormSubmit} />
-                    </div>
-                  </>
-                )}
-              </div>
+                  <div
+                    className={`m-4 relative basic-animation top-0 ${
+                      isInputVisible
+                        ? "max-h-[33vh] opacity-100"
+                        : "max-h-0 opacity-0 top-[-20vh]"
+                    }`}
+                  >
+                    <InputPrompt onSubmit={handleFormSubmit} />
+                  </div>
+                </>
+              )}
             </div>
           </div>
+          <div className="absolute top-[90vh] z-10 pointer-events-none">
+            <img src={gdglogo} alt="Logo" width={240} height={50} />
+          </div>
+        </div>
 
         <GradientBackground text={spoilerText} />
       </section>
