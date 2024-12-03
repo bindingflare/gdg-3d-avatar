@@ -26,7 +26,7 @@ const InputPrompt: FC<InputPromptProps> = ({ onSubmit }: InputPromptProps) => {
 
   return (
     <>
-      <div className="w-[90vw] md:w-[70vw] lg:w-[50vw] rounded-[12px] text-center">
+      <div className="w-[90vw] md:w-[70vw] lg:w-[50vw] xl:w-[800px] rounded-[12px] text-center">
         <h2 className="text-xl font hidden">3D Model and User Input</h2>
 
         <form className="my-4 pointer-events-none" onSubmit={handleFormSubmit}>

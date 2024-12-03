@@ -1,5 +1,6 @@
 import { FC } from "react";
 import Wrapper from "./wrapper";
+import logo from '../assets/3d-avatar-logo.svg';
 
 interface HeaderProps {
   isVisible: boolean;
@@ -13,17 +14,18 @@ const Header: FC<HeaderProps> = ({ isVisible }: HeaderProps) => {
       >
         <Wrapper>
           <div className="flex justify-between items-center w-full">
-            <div>
-              <h2 className="text-lg font-bold">3D-AVATAR</h2>
+            <div className="flex items-center">
+              <img src={logo} alt="Logo" width={50} height={50} />
+              <h2 className="text-lg font-bold px-2">3D AVATAR</h2> 
             </div>
             <nav>
               <ul className="flex space-x-4 list-none">
                 <li>
                   <a
                     href="/"
-                    className="hover:text-gray-300 pointer-events-auto"
+                    className="hover:text-gray-300 font-korean font-bold pointer-events-auto"
                   >
-                    Start Over
+                    다시시작
                   </a>
                 </li>
                 <li>
