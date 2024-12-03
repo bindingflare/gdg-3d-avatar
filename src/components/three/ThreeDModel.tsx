@@ -24,6 +24,11 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
   const previousMousePosition = useRef({ x: 0, y: 0 });
   const mouseDeltaRef = useRef(0);
 
+  const [isPaused, setIsPaused] = useState(false);
+  const isPausedRef = useRef<boolean | null>(false);
+
+  const isStartedRef = useRef<boolean | null>(false);
+
   // Function to center and position a model
   const centerAndPositionModel = (model: THREE.Object3D) => {
     const box = new THREE.Box3().setFromObject(model);
@@ -121,9 +126,10 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
 
       const intersects = raycaster.intersectObjects(scene.children, true);
 
-      if (intersects.length > 0) {
+      if (intersects.length > 0 && !isStartedRef.current) {
         // Register hit, move onto prompt stage
         setHeaderVisible(true);
+        isStartedRef.current = true;
 
         const intersectedObject = intersects[0].object;
         const targetPosition = intersectedObject.position
@@ -169,6 +175,35 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
   }, [setVisible, setHeaderVisible]);
 
   useEffect(() => {
+    const startCircularAnimation = (center: THREE.Vector3) => {
+      const clock = new THREE.Clock();
+
+      const animateCircularMotion = () => {
+        if (!isPausedRef.current && cameraRef.current && modelRef.current) {
+          requestAnimationFrame(animateCircularMotion);
+
+          const elapsedTime = clock.getElapsedTime();
+
+          // Calculate the combined angle
+          const radius = 5;
+          const speed = 0.2;
+          const angle = speed * elapsedTime + mouseDeltaRef.current;
+          const x = center.x + radius * Math.cos(angle);
+          const z = center.z + radius * Math.sin(angle);
+
+          cameraRef.current.position.set(x, center.y + 1.8, z);
+          cameraRef.current.lookAt(center);
+
+          // Render the scene
+          if (rendererRef.current) {
+            rendererRef.current.render(sceneRef.current!, cameraRef.current!);
+          }
+        }
+      };
+
+      animateCircularMotion();
+    };
+
     if (gltfUrl && sceneRef.current && cameraRef.current) {
       // Load the new model when gltfUrl changes
       const loader = new GLTFLoader();
@@ -203,12 +238,12 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
   }, [gltfUrl]);
 
   useEffect(() => {
-    const handleMouseDown = (event: { clientX: number; clientY: number; }) => {
+    const handleMouseDown = (event: { clientX: number; clientY: number }) => {
       isDraggingRef.current = true;
       previousMousePosition.current = { x: event.clientX, y: event.clientY };
     };
 
-    const handleMouseMove = (event: { clientX: number; clientY: number; }) => {
+    const handleMouseMove = (event: { clientX: number; clientY: number }) => {
       if (isDraggingRef.current) {
         const deltaX = event.clientX - previousMousePosition.current.x;
         mouseDeltaRef.current += deltaX * 0.002; // Adjust sensitivity as needed
@@ -220,47 +255,37 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
       isDraggingRef.current = false;
     };
 
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
 
     return () => {
-      window.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
     };
   }, []);
 
-  const startCircularAnimation = (center: THREE.Vector3) => {
-    const clock = new THREE.Clock();
+  useEffect(() => {
+    isPausedRef.current = isPaused;
+  }, [isPaused]);
 
-    const animateCircularMotion = () => {
-      requestAnimationFrame(animateCircularMotion);
-
-      if (cameraRef.current && modelRef.current) {
-        const elapsedTime = clock.getElapsedTime();
-
-        // Calculate the combined angle
-        const radius = 5;
-        const speed = 0.2;
-        const angle = speed * elapsedTime + mouseDeltaRef.current;
-        const x = center.x + radius * Math.cos(angle);
-        const z = center.z + radius * Math.sin(angle);
-
-        cameraRef.current.position.set(x, center.y + 1.8, z);
-        cameraRef.current.lookAt(center);
-
-        // Render the scene
-        if (rendererRef.current) {
-          rendererRef.current.render(sceneRef.current!, cameraRef.current!);
-        }
-      }
-    };
-
-    animateCircularMotion();
+  const togglePause = () => {
+    setIsPaused((prev) => !prev);
   };
 
-  return <div className="z-10 absolute pointer-events-none" ref={mountRef} />;
+  return (
+    <>
+      <div className="z-10 absolute pointer-events-none" ref={mountRef} />
+      <div className="fixed bottom-[10vh] w-full">
+        <div className="mx-auto z-10 pointer-events-none">
+          <button onClick={togglePause} className="pointer-events-auto">
+            {isPaused ? "Resume Motion" : "Pause Motion"}
+          </button>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default ThreeDModel;
