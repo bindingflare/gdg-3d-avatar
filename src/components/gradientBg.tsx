@@ -75,7 +75,7 @@ const GradientBackground: FC<GradientBackgroundProps> = ({
               isTextVisible ? "" : "opacity-0"
             }`}
           >
-            <h2 className="text-7xl italic font-semibold">{text}</h2>
+            <h2 className="text-3xl sm:text-5xl md:text-7xl italic font-semibold">{text}</h2>
           </div>
           <div
             className={`opacity-animation absolute min-h-[15vh] ${
