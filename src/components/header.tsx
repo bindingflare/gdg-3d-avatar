@@ -33,7 +33,7 @@ const Header: FC<HeaderProps> = ({ isVisible }: HeaderProps) => {
                     href="/create/"
                     className="hover:text-gray-300 pointer-events-auto"
                   >
-                    Credits
+                    크레딧
                   </a>
                 </li>
               </ul>

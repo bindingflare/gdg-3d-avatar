@@ -279,7 +279,7 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
     <>
       <div className="z-10 absolute pointer-events-none" ref={mountRef} />
       <div className={`opacity-animation fixed bottom-[10vh] w-full ${isResultVisible? "":"opacity-0"}`}>
-        <div className="mx-auto z-10 pointer-events-none">
+        <div className="mx-auto z-20 pointer-events-none">
           <button onClick={togglePause} className="pointer-events-auto">
             {isPaused ? "Resume Motion" : "Pause Motion"}
           </button>
