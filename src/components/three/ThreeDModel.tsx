@@ -20,8 +20,8 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const modelRef = useRef<THREE.Object3D | null>(null);
 
-  const [isMouseDown, setIsMouseDown] = useState(false);
-  const [baseAngle, setBaseAngle] = useState(0);
+  const isDraggingRef = useRef(false);
+  const previousMousePosition = useRef({ x: 0, y: 0 });
   const mouseDeltaRef = useRef(0);
 
   // Function to center and position a model
@@ -203,33 +203,33 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
   }, [gltfUrl]);
 
   useEffect(() => {
-    const handleMouseDown = () => {
-      setIsMouseDown(true);
+    const handleMouseDown = (event: { clientX: number; clientY: number; }) => {
+      isDraggingRef.current = true;
+      previousMousePosition.current = { x: event.clientX, y: event.clientY };
+    };
+
+    const handleMouseMove = (event: { clientX: number; clientY: number; }) => {
+      if (isDraggingRef.current) {
+        const deltaX = event.clientX - previousMousePosition.current.x;
+        mouseDeltaRef.current += deltaX * 0.002; // Adjust sensitivity as needed
+        previousMousePosition.current = { x: event.clientX, y: event.clientY };
+      }
     };
 
     const handleMouseUp = () => {
-      setIsMouseDown(false);
+      isDraggingRef.current = false;
     };
 
     window.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
 
     return () => {
       window.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     };
   }, []);
-
-  useEffect(() => {
-    if (isMouseDown) {
-      const intervalId = setInterval(() => {
-        // Increment or decrement the angle based on mouse down state
-        mouseDeltaRef.current += 0.01; // Adjust this value for desired speed
-      }, 16); // Roughly 60 frames per second
-
-      return () => clearInterval(intervalId);
-    }
-  }, [isMouseDown]);
 
   const startCircularAnimation = (center: THREE.Vector3) => {
     const clock = new THREE.Clock();
@@ -243,7 +243,7 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
         // Calculate the combined angle
         const radius = 5;
         const speed = 0.2;
-        const angle = baseAngle + speed * elapsedTime + mouseDeltaRef.current;
+        const angle = speed * elapsedTime + mouseDeltaRef.current;
         const x = center.x + radius * Math.cos(angle);
         const z = center.z + radius * Math.sin(angle);
 
