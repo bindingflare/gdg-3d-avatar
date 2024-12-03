@@ -1,5 +1,6 @@
-import { FC, MouseEventHandler, useState } from "react";
+import { FC, MouseEventHandler, useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
+import Wrapper from "./wrapper";
 
 interface GradientBackgroundProps {
   text: string;
@@ -11,8 +12,24 @@ const GradientBackground: FC<GradientBackgroundProps> = ({
   const [gradient, setGradient] = useState(
     "circle at 50% 10%, rgb(128, 40, 128), rgb(128, 214, 128)"
   );
+  const [isTextVisible, setTextVisible] = useState(false);
+  const [isMarqueeVisible, setMarqueeVisible] = useState(false);
 
-  const speed = text.length > 20 ? 10 : 0;
+  useEffect(() => {
+    if (text.length > 20) {
+      console.log("Showing marquee text");
+      setTextVisible(false);
+      setMarqueeVisible(true);
+    } else if (text.length == 0) {
+      console.log("Hiding text");
+      setTextVisible(false);
+      setMarqueeVisible(false);
+    } else {
+      console.log("Showing text");
+      setTextVisible(true);
+      setMarqueeVisible(false);
+    }
+  }, [text]);
 
   const handleMouseMove: MouseEventHandler<HTMLDivElement> = (e) => {
     const { innerWidth, innerHeight } = window;
@@ -22,18 +39,18 @@ const GradientBackground: FC<GradientBackgroundProps> = ({
     // Limit percent if between 50~55%
     if (xPercent >= 45 && xPercent <= 55) {
       xPercent = xPercent <= 50 ? 45 : 55;
-  }
-  
-  if (yPercent >= 45 && yPercent <= 55) {
+    }
+
+    if (yPercent >= 45 && yPercent <= 55) {
       yPercent = yPercent <= 50 ? 45 : 55;
-  }
+    }
 
     // Calculate RGB values based on cursor position
     const r1 = Math.round((xPercent / 100) * 255);
-    const g1 = 80
+    const g1 = 80;
     const b1 = Math.round((yPercent / 100) * 255);
     const r2 = Math.round(((100 - xPercent) / 100) * 255);
-    const g2 = 80
+    const g2 = 80;
     const b2 = Math.round(((100 - yPercent) / 100) * 255);
 
     // Create a radial gradient based on cursor position
@@ -51,18 +68,27 @@ const GradientBackground: FC<GradientBackgroundProps> = ({
       }}
       onMouseMove={handleMouseMove}
     >
-      <div className="text-white/25 text-center top-[70%] fixed w-full">
-        {speed == 0 ? (
-          <h1 className="text-7xl mx-auto italic font-semibold overflow-hidden text-nowrap">
-            {text}
-          </h1>
-        ) : (
-          <Marquee className="align-middle" speed={speed}>
-            <h1 className="text-7xl mx-auto italic font-semibold overflow-hidden text-nowrap">
-              {text}
-            </h1>
-          </Marquee>
-        )}
+      <div className="text-white/25 text-center top-[70vh] fixed w-full">
+        <Wrapper>
+          <div
+            className={`opacity-animation relative min-h-[15vh] min-w-full ${
+              isTextVisible ? "" : "opacity-0"
+            }`}
+          >
+            <h2 className="text-7xl italic font-semibold">{text}</h2>
+          </div>
+          <div
+            className={`opacity-animation absolute min-h-[15vh] ${
+              isMarqueeVisible ? "" : "opacity-0"
+            }`}
+          >
+            <Marquee speed={30}>
+              <h2 className="text-7xl italic font-semibold overflow-hidden text-nowrap">
+                {text}
+              </h2>
+            </Marquee>
+          </div>
+        </Wrapper>
       </div>
     </div>
   );

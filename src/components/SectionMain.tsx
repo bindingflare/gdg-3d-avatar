@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import GradientBackground from "./gradientBg";
 import ThreeDModel from "./three/ThreeDModel";
 import InputPrompt from "./create/inputPrompt";
@@ -7,10 +7,25 @@ import Wrapper from "./wrapper";
 
 const SectionMain: FC = () => {
   const [isHeaderVisible, setIsHeaderVisible] = useState(false);
+  const [delayedHeaderVisible, setDelayedHeaderVisible] = useState(false);
   const [isInputVisible, setIsInputVisible] = useState(false);
   const [isResultVisible, setIsResultVisible] = useState(false);
   const [gltfUrl, setGltfUrl] = useState<string | null>(null);
   const [spoilerText, setSpoilerText] = useState<string>("화면을 클릭하세요!");
+
+  useEffect(() => {
+    if (isHeaderVisible) {
+      setSpoilerText("");
+
+      const timeoutId = setTimeout(() => {
+        setDelayedHeaderVisible(true);
+      }, 1000);
+
+      return () => clearTimeout(timeoutId);
+    } else {
+      setDelayedHeaderVisible(false);
+    }
+  }, [isHeaderVisible]);
 
   const handleFormSubmit = async (text: string) => {
     setIsInputVisible(false);
@@ -63,7 +78,7 @@ const SectionMain: FC = () => {
           >
             <div
               className={`basic-animation ${
-                isHeaderVisible ? "opacity-0" : ""
+                isHeaderVisible  ? "opacity-0" : ""
               }`}
             >
               <h2 className="korean">텍스트로 뽑는 당신의 캐릭터 자판기, </h2>
@@ -77,7 +92,7 @@ const SectionMain: FC = () => {
               <>
                 <div
                   className={`basic-animation ${
-                    isHeaderVisible ? "mt-[10vh]" : "opacity-0"
+                    delayedHeaderVisible  ? "mt-[10vh]" : "opacity-0"
                   }`}
                 >
                   <h2 className="korean">간단한 텍스트를 입력해 나만의 캐릭터를 만들어보세요!</h2>

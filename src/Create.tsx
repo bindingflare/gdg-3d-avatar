@@ -6,7 +6,7 @@ import GradientBackground from "./components/gradientBg";
 function Create() {
   return (
     <>
-      <Header />
+      <Header isVisible={true} />
       {/* <div
         id="three-container"
         className="w-screen h-screen fixed top-[90px] bg-gray-200 mx-auto rounded-[16px]"

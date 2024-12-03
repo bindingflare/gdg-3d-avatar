@@ -37,6 +37,10 @@
   @apply transition-all duration-500 ease-in-out
 }
 
+.opacity-animation {
+  @apply transition-opacity duration-500 ease-in-out
+}
+
 body {
   /* font-family: Arial, sans-serif; */
   margin: 0;

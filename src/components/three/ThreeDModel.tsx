@@ -6,13 +6,13 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 interface ThreeDModelProps {
   gltfUrl: string | null;
   setVisible: (visible: boolean) => void;
-  setHeaderVisible: (headerVisible: boolean) => void
+  setHeaderVisible: (headerVisible: boolean) => void;
 }
 
 const ThreeDModel: React.FC<ThreeDModelProps> = ({
   gltfUrl,
   setVisible,
-  setHeaderVisible
+  setHeaderVisible,
 }: ThreeDModelProps) => {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -58,7 +58,7 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
 
     // Load the default model
     const loader = new GLTFLoader();
-    loader.load("/objects/dispenser.glb", (gltf) => {
+    loader.load("/objects/dispenser.glb", (gltf: { scene: THREE.Scene }) => {
       const model = gltf.scene;
       scene.add(model);
 
@@ -84,8 +84,7 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
       camera.position.y = distance * Math.sin(angle2);
       camera.position.z = zDistance * Math.cos(angle);
 
-      camera.lookAt(model.position 
-        .add(new THREE.Vector3(1, 0, -1)));
+      camera.lookAt(model.position.add(new THREE.Vector3(1, 0, -1)));
     };
 
     // Function to add lighting
@@ -110,7 +109,7 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
-    function onMouseClick(event) {
+    function onMouseClick(event: { clientX: number; clientY: number }) {
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
@@ -128,6 +127,7 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
           .add(new THREE.Vector3(1, 0, -1));
 
         gsap.to(camera.position, {
+          delay: 1,
           duration: 1.5,
           x: targetPosition.x,
           y: targetPosition.y,
@@ -151,13 +151,13 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
       }
       window.removeEventListener("click", onMouseClick);
     };
-  }, [setVisible]);
+  }, [setVisible, setHeaderVisible]);
 
   useEffect(() => {
     if (gltfUrl && sceneRef.current && cameraRef.current) {
       // Load the new model when gltfUrl changes
       const loader = new GLTFLoader();
-      loader.load(gltfUrl, (gltf) => {
+      loader.load(gltfUrl, (gltf: { scene: THREE.Scene }) => {
         const newModel = gltf.scene;
         sceneRef.current!.add(newModel);
         modelRef.current = newModel;
@@ -181,7 +181,7 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
           },
           onComplete: () => {
             startCircularAnimation(center);
-          }
+          },
         });
       });
     }
@@ -189,34 +189,35 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
 
   const startCircularAnimation = (center: THREE.Vector3) => {
     const clock = new THREE.Clock();
-  
+
     const animateCircularMotion = () => {
       requestAnimationFrame(animateCircularMotion);
-  
+
       if (cameraRef.current && modelRef.current) {
         const elapsedTime = clock.getElapsedTime();
-  
+
         // Calculate new camera position in a circular path
         const radius = 5; // Distance from the model
         const speed = 0.2; // Reduced speed for smoother motion
-  
+
         // Use easing-like effect by modulating speed over time
         const angle = speed * elapsedTime + 70;
         const x = center.x + radius * Math.cos(angle);
         const z = center.z + radius * Math.sin(angle);
-  
+
         // Set camera position and look at the model's center
         cameraRef.current.position.set(x, center.y + 2, z);
         cameraRef.current.lookAt(center);
-  
+
         // Render the scene
-        rendererRef.current.render(sceneRef.current!, cameraRef.current!);
+        if (rendererRef.current) {
+          rendererRef.current.render(sceneRef.current!, cameraRef.current!);
+        }
       }
     };
-  
+
     animateCircularMotion();
   };
-  
 
   return <div className="z-10 absolute pointer-events-none" ref={mountRef} />;
 };
