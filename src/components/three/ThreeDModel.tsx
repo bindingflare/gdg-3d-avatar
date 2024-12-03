@@ -7,12 +7,14 @@ interface ThreeDModelProps {
   gltfUrl: string | null;
   setVisible: (visible: boolean) => void;
   setHeaderVisible: (headerVisible: boolean) => void;
+  isResultVisible: boolean;
 }
 
 const ThreeDModel: React.FC<ThreeDModelProps> = ({
   gltfUrl,
   setVisible,
   setHeaderVisible,
+  isResultVisible,
 }: ThreeDModelProps) => {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -179,9 +181,8 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
       const clock = new THREE.Clock();
 
       const animateCircularMotion = () => {
+        requestAnimationFrame(animateCircularMotion);
         if (!isPausedRef.current && cameraRef.current && modelRef.current) {
-          requestAnimationFrame(animateCircularMotion);
-
           const elapsedTime = clock.getElapsedTime();
 
           // Calculate the combined angle
@@ -193,11 +194,11 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
 
           cameraRef.current.position.set(x, center.y + 1.8, z);
           cameraRef.current.lookAt(center);
+        }
 
-          // Render the scene
-          if (rendererRef.current) {
-            rendererRef.current.render(sceneRef.current!, cameraRef.current!);
-          }
+        // Render the scene
+        if (rendererRef.current) {
+          rendererRef.current.render(sceneRef.current!, cameraRef.current!);
         }
       };
 
@@ -277,7 +278,7 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
   return (
     <>
       <div className="z-10 absolute pointer-events-none" ref={mountRef} />
-      <div className="fixed bottom-[10vh] w-full">
+      <div className={`opacity-animation fixed bottom-[10vh] w-full ${isResultVisible? "":"opacity-0"}`}>
         <div className="mx-auto z-10 pointer-events-none">
           <button onClick={togglePause} className="pointer-events-auto">
             {isPaused ? "Resume Motion" : "Pause Motion"}

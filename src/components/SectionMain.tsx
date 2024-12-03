@@ -3,7 +3,6 @@ import GradientBackground from "./gradientBg";
 import ThreeDModel from "./three/ThreeDModel";
 import InputPrompt from "./create/inputPrompt";
 import Header from "./header";
-import Wrapper from "./wrapper";
 
 const SectionMain: FC = () => {
   const [isHeaderVisible, setIsHeaderVisible] = useState(false);
@@ -69,6 +68,7 @@ const SectionMain: FC = () => {
           gltfUrl={gltfUrl}
           setVisible={setIsInputVisible}
           setHeaderVisible={setIsHeaderVisible}
+          isResultVisible={isResultVisible}
         />
           <div className="relative w-[1280px] max-w-full sm:max-w-[85vw] md:max-w-[70vw] mx-auto">
             <div className="absolute top-[10vh] lg:top-[8vh]">
