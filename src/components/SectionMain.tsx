@@ -2,11 +2,15 @@ import { FC, useState } from "react";
 import GradientBackground from "./gradientBg";
 import ThreeDModel from "./three/ThreeDModel";
 import InputPrompt from "./create/inputPrompt";
+import Header from "./header";
+import Wrapper from "./wrapper";
 
 const SectionMain: FC = () => {
+  const [isHeaderVisible, setIsHeaderVisible] = useState(false);
   const [isInputVisible, setIsInputVisible] = useState(false);
+  const [isResultVisible, setIsResultVisible] = useState(false);
   const [gltfUrl, setGltfUrl] = useState<string | null>(null);
-  const [spoilerText, setSpoilerText] = useState<string>("Click Me!");
+  const [spoilerText, setSpoilerText] = useState<string>("화면을 클릭하세요!");
 
   const handleFormSubmit = async (text: string) => {
     setIsInputVisible(false);
@@ -26,8 +30,14 @@ const SectionMain: FC = () => {
       if (response.ok) {
         const blob = await response.blob();
         const url = URL.createObjectURL(blob);
+
+        setIsResultVisible(true);
         setGltfUrl(url); // Store the URL in state
-        setSpoilerText(text.length > 20? `${text}` : `${text}~ ${text}!! ${text}.. ${text}? ${text}`);
+        setSpoilerText(
+          text.length > 20
+            ? `${text}`
+            : `${text}~ ${text}!! ${text}.. ${text}? ${text}`
+        );
       } else {
         console.error("Failed to fetch GLTF file");
       }
@@ -39,21 +49,52 @@ const SectionMain: FC = () => {
   return (
     <>
       <section className="relative">
-        <ThreeDModel gltfUrl={gltfUrl} setVisible={setIsInputVisible} />
+        <Header isVisible={isHeaderVisible} />
+        <ThreeDModel
+          gltfUrl={gltfUrl}
+          setVisible={setIsInputVisible}
+          setHeaderVisible={setIsHeaderVisible}
+        />
         <GradientBackground text={spoilerText} />
-        <div className={`pt-[90px]`}>
-          <div className="w-full h-[300px] z-10 relative">
+        <Wrapper>
+          <div className="h-[5vh] pointer-events-none"></div>
+          <div
+            className={`w-full z-10 relative text-start pointer-events-none`}
+          >
             <div
-              className={` absolute top-0 w-full transition-all duration-500 ease-in-out ${
-                isInputVisible
-                  ? "max-h-[500px] opacity-100"
-                  : "max-h-0 opacity-0 top-[-100px]"
+              className={`basic-animation ${
+                isHeaderVisible ? "opacity-0" : ""
               }`}
             >
-              <InputPrompt onSubmit={handleFormSubmit} />
+              <h2 className="korean">텍스트로 뽑는 당신의 캐릭터 자판기, </h2>
+              <div>
+                <h2 className="text-7xl">Text to Avatar</h2>
+              </div>
             </div>
+            {isResultVisible ? (
+              <></>
+            ) : (
+              <>
+                <div
+                  className={`basic-animation ${
+                    isHeaderVisible ? "mt-[10vh]" : "opacity-0"
+                  }`}
+                >
+                  <h2 className="korean">간단한 텍스트를 입력해 나만의 캐릭터를 만들어보세요!</h2>
+                </div>
+                <div
+                  className={`m-4 relative basic-animation top-0 ${
+                    isInputVisible
+                      ? "max-h-[33vh] opacity-100"
+                      : "max-h-0 opacity-0 top-[-20vh]"
+                  }`}
+                >
+                  <InputPrompt onSubmit={handleFormSubmit} />
+                </div>
+              </>
+            )}
           </div>
-        </div>
+        </Wrapper>
       </section>
     </>
   );

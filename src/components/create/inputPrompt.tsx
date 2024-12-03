@@ -1,10 +1,16 @@
-import { FC } from "react";
+import { FC, SetStateAction, useState } from "react";
 
 interface InputPromptProps {
   onSubmit: (description: string) => void;
 }
 
-const InputPrompt: FC<InputPromptProps> = ({onSubmit}: InputPromptProps) => {
+const InputPrompt: FC<InputPromptProps> = ({ onSubmit }: InputPromptProps) => {
+  const [inputValue, setInputValue] = useState("");
+
+  const handleInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+    setInputValue(event.target.value);
+  };
+
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -20,22 +26,26 @@ const InputPrompt: FC<InputPromptProps> = ({onSubmit}: InputPromptProps) => {
 
   return (
     <>
-      <div className="mx-auto w-[90vw] md:w-[70vw] lg:w-[50vw] bg-gray-300/40 rounded-[12px] p-4">
+      <div className="w-[90vw] md:w-[70vw] lg:w-[50vw] rounded-[12px] text-center">
         <h2 className="text-xl font hidden">3D Model and User Input</h2>
 
-        <form className="my-1.5" onSubmit={handleFormSubmit}>
+        <form className="my-4 pointer-events-none" onSubmit={handleFormSubmit}>
           <input
             id="user-text"
             name="user-text"
             type="text"
-            placeholder="Enter your description"
-            className="w-full p-2 mb-2 border border-gray-400 rounded"
+            value={inputValue}
+            placeholder="캐릭터의 대사, 외향, 성격을 자유롭게 입력할 수 있어요..."
+            className="prompt-input pointer-events-auto"
+            onChange={handleInputChange}
           />
           <input
             id="submit-button"
             type="submit"
-            value="Submit"
-            className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer"
+            value="만들기"
+            className={`prompt-button ${
+              inputValue.length > 0 ? "opactiy-100 pointer-events-auto" : "opacity-0"
+            }`}
           />
         </form>
       </div>

@@ -6,22 +6,7 @@ interface WrapperProps {
 }
 
 const Wrapper: FC<WrapperProps> = ({ children }) => {
-  return <div style={styles.wrapper}>{children}</div>;
-};
-
-const styles: { [key: string]: React.CSSProperties } = {
-  wrapper: {
-    textAlign: "center",
-    justifyContent: "center",
-    width: "1300px",
-    maxWidth: "70%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    margin: "auto",
-    gap: "16px",
-    padding: "20px 0"
-  },
+  return <div className="text-center justify-center w-[1300px] max-w-[70%] flex flex-col items-center mx-auto gap-4 py-5">{children}</div>;
 };
 
 export default Wrapper;

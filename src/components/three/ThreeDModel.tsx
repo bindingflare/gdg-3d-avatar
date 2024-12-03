@@ -6,11 +6,13 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 interface ThreeDModelProps {
   gltfUrl: string | null;
   setVisible: (visible: boolean) => void;
+  setHeaderVisible: (headerVisible: boolean) => void
 }
 
 const ThreeDModel: React.FC<ThreeDModelProps> = ({
   gltfUrl,
-  setVisible
+  setVisible,
+  setHeaderVisible
 }: ThreeDModelProps) => {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -117,6 +119,9 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
       const intersects = raycaster.intersectObjects(scene.children, true);
 
       if (intersects.length > 0) {
+        // Register hit, move onto prompt stage
+        setHeaderVisible(true);
+
         const intersectedObject = intersects[0].object;
         const targetPosition = intersectedObject.position
           .clone()

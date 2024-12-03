@@ -16,17 +16,25 @@ const GradientBackground: FC<GradientBackgroundProps> = ({
 
   const handleMouseMove: MouseEventHandler<HTMLDivElement> = (e) => {
     const { innerWidth, innerHeight } = window;
-    const xPercent = (e.clientX / innerWidth) * 100;
-    const yPercent = (e.clientY / innerHeight) * 100;
+    let xPercent = (e.clientX / innerWidth) * 100;
+    let yPercent = (e.clientY / innerHeight) * 100;
+
+    // Limit percent if between 50~55%
+    if (xPercent >= 45 && xPercent <= 55) {
+      xPercent = xPercent <= 50 ? 45 : 55;
+  }
+  
+  if (yPercent >= 45 && yPercent <= 55) {
+      yPercent = yPercent <= 50 ? 45 : 55;
+  }
 
     // Calculate RGB values based on cursor position
     const r1 = Math.round((xPercent / 100) * 255);
-    const g1 = Math.round((yPercent / 100) * 255);
-    const b1 = 128; // Fixed blue value for the first color
-
+    const g1 = 80
+    const b1 = Math.round((yPercent / 100) * 255);
     const r2 = Math.round(((100 - xPercent) / 100) * 255);
-    const g2 = Math.round(((100 - yPercent) / 100) * 255);
-    const b2 = 128; // Fixed blue value for the second color
+    const g2 = 80
+    const b2 = Math.round(((100 - yPercent) / 100) * 255);
 
     // Create a radial gradient based on cursor position
     const newGradient = `circle at ${xPercent}% ${yPercent}%, rgb(${r1}, ${g1}, ${b1}), rgb(${r2}, ${g2}, ${b2})`;
