@@ -18,8 +18,8 @@ function Create() {
 
       </div>
       <Wrapper>
-        <div className="z-10">
-          <h2>Made by:</h2>
+        <div className="z-10 font-korean">
+          <h2 className="font-english my-8">Made by:</h2>
           <ul>
             <li>정준우</li>
             <li>백승우</li>

@@ -83,7 +83,7 @@ const SectionMain: FC = () => {
             >
               <h2 className="korean">텍스트로 뽑는 당신의 캐릭터 자판기, </h2>
               <div>
-                <h2 className="text-7xl">Text to Avatar</h2>
+                <h2 className="text-7xl lg:text-8xl xl:text-9xl">Text to Avatar</h2>
               </div>
             </div>
             {isResultVisible ? (

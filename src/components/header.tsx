@@ -8,8 +8,8 @@ interface HeaderProps {
 const Header: FC<HeaderProps> = ({ isVisible }: HeaderProps) => {
   return (
     <>
-      <section
-        className={`header pointer-events-none ${isVisible ? "" : "opacity-0"}`}
+      <div
+        className={`header ${isVisible ? "" : "opacity-0"}`}
       >
         <Wrapper>
           <div className="flex justify-between items-center w-full">
@@ -38,7 +38,7 @@ const Header: FC<HeaderProps> = ({ isVisible }: HeaderProps) => {
             </nav>
           </div>
         </Wrapper>
-      </section>
+      </div>
     </>
   );
 };

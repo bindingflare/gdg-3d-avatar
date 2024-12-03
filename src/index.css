@@ -18,11 +18,11 @@
 }
 
 .header {
-  @apply fixed top-0 w-full bg-gray-800/50 text-white py-2 z-30 transition-opacity duration-200 ease-in
+  @apply fixed top-0 w-full bg-gray-800/50 text-white py-2 z-30 transition-opacity pointer-events-none duration-200 ease-in
 }
 
 .footer {
-  @apply bg-gray-800 text-center fixed bottom-0 w-full
+  @apply fixed bottom-0 w-full bg-gray-800 text-center pointer-events-none
 }
 
 .prompt-input {
