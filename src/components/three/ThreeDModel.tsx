@@ -1,5 +1,5 @@
 import gsap from "gsap";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
@@ -19,6 +19,10 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const modelRef = useRef<THREE.Object3D | null>(null);
+
+  const [isMouseDown, setIsMouseDown] = useState(false);
+  const [baseAngle, setBaseAngle] = useState(0);
+  const mouseDeltaRef = useRef(0);
 
   // Function to center and position a model
   const centerAndPositionModel = (model: THREE.Object3D) => {
@@ -148,12 +152,12 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
       // Update camera aspect ratio and projection matrix
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
-    
+
       // Update renderer size
       renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
-    window.addEventListener('resize', onWindowResize, false);
+    window.addEventListener("resize", onWindowResize, false);
 
     // Clean up on unmount
     return () => {
@@ -198,6 +202,35 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
     }
   }, [gltfUrl]);
 
+  useEffect(() => {
+    const handleMouseDown = () => {
+      setIsMouseDown(true);
+    };
+
+    const handleMouseUp = () => {
+      setIsMouseDown(false);
+    };
+
+    window.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      window.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isMouseDown) {
+      const intervalId = setInterval(() => {
+        // Increment or decrement the angle based on mouse down state
+        mouseDeltaRef.current += 0.01; // Adjust this value for desired speed
+      }, 16); // Roughly 60 frames per second
+
+      return () => clearInterval(intervalId);
+    }
+  }, [isMouseDown]);
+
   const startCircularAnimation = (center: THREE.Vector3) => {
     const clock = new THREE.Clock();
 
@@ -207,16 +240,13 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
       if (cameraRef.current && modelRef.current) {
         const elapsedTime = clock.getElapsedTime();
 
-        // Calculate new camera position in a circular path
-        const radius = 5; // Distance from the model
-        const speed = 0.2; // Reduced speed for smoother motion
-
-        // Use easing-like effect by modulating speed over time
-        const angle = speed * elapsedTime + 70;
+        // Calculate the combined angle
+        const radius = 5;
+        const speed = 0.2;
+        const angle = baseAngle + speed * elapsedTime + mouseDeltaRef.current;
         const x = center.x + radius * Math.cos(angle);
         const z = center.z + radius * Math.sin(angle);
 
-        // Set camera position and look at the model's center
         cameraRef.current.position.set(x, center.y + 1.8, z);
         cameraRef.current.lookAt(center);
 
