@@ -62,20 +62,20 @@ const GradientBackground: FC<GradientBackgroundProps> = ({
 
   return (
     <div
-      className={`w-screen h-screen absolute transition-colors duration-300`}
+      className={`w-screen h-screen transition-colors duration-300`}
       style={{
         backgroundImage: `radial-gradient(${gradient})`,
       }}
       onMouseMove={handleMouseMove}
     >
-      <div className="text-white/25 text-center top-[70vh] fixed w-full">
+      <div className="text-white/25 text-center fixed w-full">
         <Wrapper>
           <div
             className={`opacity-animation relative min-h-[15vh] min-w-full ${
               isTextVisible ? "" : "opacity-0"
             }`}
           >
-            <h2 className="text-3xl sm:text-5xl md:text-7xl italic font-semibold">{text}</h2>
+            <h2 className="text-3xl sm:text-5xl md:text-7xl italic font-semibold mt-[70vh]">{text}</h2>
           </div>
           <div
             className={`opacity-animation absolute min-h-[15vh] ${
