@@ -32,7 +32,7 @@ jobs:
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
-          project: "junb-gdg-3d-avat-79"
+          project: "gdgyonsei-3d-avatar"
           entrypoint: "jsr:@std/http@1.0.0-rc.5/file-server"
           root: "dist"
           
