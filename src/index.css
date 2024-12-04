@@ -59,9 +59,25 @@ li {
   padding: 4px;
 }
 
+a:hover {
+  @apply text-gray-300
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     color: #213547;
     background-color: #ffffff;
+  }
+
+  .prompt-input {
+    @apply bg-slate-800 text-gray-400
+  }
+
+  .header {
+    @apply text-gray-300
+  }
+
+  a:hover {
+    @apply text-gray-100
   }
 }
