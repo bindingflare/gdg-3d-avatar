@@ -22,7 +22,7 @@
 - Figma
 - (3D modelling)
 
-### Front-End
+### Front-End (Current Repsository)
 - React + Vite
 - Deno Deploy
 - Three.js
