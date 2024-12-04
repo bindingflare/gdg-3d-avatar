@@ -18,7 +18,7 @@ function Create() {
 
       </div>
       <Wrapper>
-        <div className="z-10 font-korean">
+        <div className="z-10 font-korean max-md:h-[77.7vh]">
           <h2 className="font-english my-8">Made by:</h2>
           <ul>
             <li>정준우</li>
