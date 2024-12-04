@@ -115,9 +115,9 @@ const SectionMain: FC = () => {
               )}
             </div>
           </div>
-          <div className="absolute top-[90vh] z-10 pointer-events-none">
-            <img src={gdglogo} alt="Logo" width={300} height={50} />
-          </div>
+        </div>
+        <div className="absolute top-[90vh] left-[5vw] md:top-[85vh] z-10 pointer-events-none">
+          <img src={gdglogo} alt="Logo" width={300} height={50} />
         </div>
 
         <GradientBackground text={spoilerText} />
