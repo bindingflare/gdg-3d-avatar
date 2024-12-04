@@ -79,7 +79,7 @@ const GradientBackground: FC<GradientBackgroundProps> = ({
             <h2 className="text-3xl sm:text-5xl md:text-7xl italic font-semibold">{text}</h2>
           </div>
           <div
-            className={`opacity-animation absolute min-h-[15vh] max-w-full ${
+            className={`opacity-animation absolute md:top-0 min-h-[15vh] max-w-full ${
               isMarqueeVisible ? "" : "opacity-0"
             }`}
           >
