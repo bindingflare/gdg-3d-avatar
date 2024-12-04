@@ -318,7 +318,7 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
     <>
       <div className="z-10 absolute pointer-events-none" ref={mountRef} />
       <div
-        className={`opacity-animation fixed bottom-[10vh] z-30 w-full ${
+        className={`opacity-animation absolute md:fixed bottom-[10vh] z-30 w-full ${
           isResultVisible ? "" : "opacity-0"
         }`}
       >
