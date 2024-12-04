@@ -323,7 +323,10 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
         }`}
       >
         <div className="mx-auto pointer-events-none">
-          <button onClick={togglePause} className="pointer-events-auto">
+          <button
+            onClick={togglePause}
+            className={`${isResultVisible ? "pointer-events-auto" : ""}`}
+          >
             {isPaused ? "Resume Motion" : "Pause Motion"}
           </button>
         </div>

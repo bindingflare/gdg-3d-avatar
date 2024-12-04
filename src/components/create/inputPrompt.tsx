@@ -2,12 +2,18 @@ import { FC, SetStateAction, useState } from "react";
 
 interface InputPromptProps {
   onSubmit: (description: string) => void;
+  isPromptVisible: boolean;
 }
 
-const InputPrompt: FC<InputPromptProps> = ({ onSubmit }: InputPromptProps) => {
+const InputPrompt: FC<InputPromptProps> = ({
+  onSubmit,
+  isPromptVisible,
+}: InputPromptProps) => {
   const [inputValue, setInputValue] = useState("");
 
-  const handleInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+  const handleInputChange = (event: {
+    target: { value: SetStateAction<string> };
+  }) => {
     setInputValue(event.target.value);
   };
 
@@ -36,7 +42,9 @@ const InputPrompt: FC<InputPromptProps> = ({ onSubmit }: InputPromptProps) => {
             type="text"
             value={inputValue}
             placeholder="캐릭터의 대사, 외향, 성격을 자유롭게 입력할 수 있어요..."
-            className="prompt-input pointer-events-auto"
+            className={`prompt-input ${
+              isPromptVisible ? "pointer-events-auto" : ""
+            }`}
             onChange={handleInputChange}
           />
           <input
@@ -44,7 +52,9 @@ const InputPrompt: FC<InputPromptProps> = ({ onSubmit }: InputPromptProps) => {
             type="submit"
             value="만들기"
             className={`prompt-button ${
-              inputValue.length > 0 ? "opactiy-100 pointer-events-auto" : "opacity-0"
+              inputValue.length > 0
+                ? "opactiy-100 pointer-events-auto"
+                : "opacity-0 pointer-events-none"
             }`}
           />
         </form>

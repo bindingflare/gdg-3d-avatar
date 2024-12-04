@@ -109,7 +109,7 @@ const SectionMain: FC = () => {
                         : "max-h-0 opacity-0 top-[-20vh]"
                     }`}
                   >
-                    <InputPrompt onSubmit={handleFormSubmit} />
+                    <InputPrompt onSubmit={handleFormSubmit} isPromptVisible={isInputVisible} />
                   </div>
                 </>
               )}

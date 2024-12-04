@@ -23,7 +23,7 @@ const Header: FC<HeaderProps> = ({ isVisible }: HeaderProps) => {
                 <li>
                   <a
                     href="/"
-                    className="font-korean font-bold pointer-events-auto"
+                    className={`font-korean font-bold ${isVisible ? "pointer-events-auto" : ""}`}
                   >
                     다시시작
                   </a>
@@ -31,7 +31,7 @@ const Header: FC<HeaderProps> = ({ isVisible }: HeaderProps) => {
                 <li>
                   <a
                     href="/create/"
-                    className="font-korean font-bold pointer-events-auto"
+                    className={`font-korean font-bold ${isVisible ? "pointer-events-auto" : ""}`}
                   >
                     크레딧
                   </a>
