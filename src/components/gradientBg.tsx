@@ -68,7 +68,8 @@ const GradientBackground: FC<GradientBackgroundProps> = ({
       }}
       onMouseMove={handleMouseMove}
     >
-      <div className="text-white/25 mt-[75vh] text-center fixed w-full">
+      <div className="text-white/25 md:mt-[75vh] text-center md:fixed w-full">
+        <div className="max-md:h-[75vh]" />
         <Wrapper>
           <div
             className={`opacity-animation relative min-h-[15vh] min-w-full ${
