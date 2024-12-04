@@ -98,7 +98,7 @@ const SectionMain: FC = () => {
                       delayedHeaderVisible ? "mt-[10vh]" : "opacity-0"
                     }`}
                   >
-                    <h2 className="korean">
+                    <h2 className="korean text-white">
                       간단한 텍스트를 입력해 나만의 캐릭터를 만들어보세요!
                     </h2>
                   </div>
