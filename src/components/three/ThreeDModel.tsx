@@ -46,6 +46,7 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
     model.scale.setScalar((1 / maxSize) * scaleFactor);
   };
 
+  // Scene creation (with dispenser model)
   useEffect(() => {
     // Set up scene, camera, and renderer
     const scene = new THREE.Scene();
@@ -176,6 +177,7 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
     };
   }, [setVisible, setHeaderVisible]);
 
+  // Loading response GLTF model
   useEffect(() => {
     const startCircularAnimation = (center: THREE.Vector3) => {
       const clock = new THREE.Clock();
@@ -239,6 +241,7 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
   }, [gltfUrl]);
 
   useEffect(() => {
+    // Mouse dragging events
     const handleMouseDown = (event: { clientX: number; clientY: number }) => {
       isDraggingRef.current = true;
       previousMousePosition.current = { x: event.clientX, y: event.clientY };
@@ -256,17 +259,53 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
       isDraggingRef.current = false;
     };
 
+    // Touch dragging events
+    const handleTouchStart = (event: TouchEvent) => {
+      if (event.touches.length === 1) {
+        isDraggingRef.current = true;
+        previousMousePosition.current = {
+          x: event.touches[0].clientX,
+          y: event.touches[0].clientY,
+        };
+      }
+    };
+
+    const handleTouchMove = (event: TouchEvent) => {
+      if (isDraggingRef.current && event.touches.length === 1) {
+        const deltaX =
+          event.touches[0].clientX - previousMousePosition.current.x;
+        mouseDeltaRef.current += deltaX * 0.002; // Adjust sensitivity as needed
+        previousMousePosition.current = {
+          x: event.touches[0].clientX,
+          y: event.touches[0].clientY,
+        };
+      }
+    };
+
+    const handleTouchEnd = () => {
+      isDraggingRef.current = false;
+    };
+
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
+
+    window.addEventListener("touchstart", handleTouchStart);
+    window.addEventListener("touchmove", handleTouchMove);
+    window.addEventListener("touchend", handleTouchEnd);
 
     return () => {
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
+
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
     };
   }, []);
 
+  // Toggle Pause/ Resume
   useEffect(() => {
     isPausedRef.current = isPaused;
   }, [isPaused]);
@@ -278,7 +317,11 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
   return (
     <>
       <div className="z-10 absolute pointer-events-none" ref={mountRef} />
-      <div className={`opacity-animation fixed bottom-[10vh] z-30 w-full ${isResultVisible? "":"opacity-0"}`}>
+      <div
+        className={`opacity-animation absolute md:fixed bottom-[10vh] z-30 w-full ${
+          isResultVisible ? "" : "opacity-0"
+        }`}
+      >
         <div className="mx-auto pointer-events-none">
           <button onClick={togglePause} className="pointer-events-auto">
             {isPaused ? "Resume Motion" : "Pause Motion"}
