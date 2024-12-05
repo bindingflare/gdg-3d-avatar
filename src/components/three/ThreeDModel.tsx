@@ -26,6 +26,8 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
   const previousMousePosition = useRef({ x: 0, y: 0 });
   const mouseDeltaRef = useRef(0);
 
+  const [isLoading, setIsLoading] = useState(true);
+
   const [isPaused, setIsPaused] = useState(false);
   const isPausedRef = useRef<boolean | null>(false);
 
@@ -104,6 +106,8 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
         
         }
       });
+
+      setIsLoading(false); // model is loaded
 
       // Render loop
       animate();
@@ -352,6 +356,7 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
 
   return (
     <>
+      {isLoading && <div className="fixed top-[50vh] z-30 w-full text-center text-white">Loading...</div>}
       <div className="z-10 absolute pointer-events-none" ref={mountRef} />
       <div
         className={`opacity-animation absolute md:fixed bottom-[10vh] z-30 w-full ${
