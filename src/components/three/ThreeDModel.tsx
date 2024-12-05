@@ -219,10 +219,12 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
         if (!isPausedRef.current && cameraRef.current && modelRef.current) {
           const elapsedTime = clock.getElapsedTime();
 
+          mouseDeltaRef.current = 0;
+
           // Calculate the combined angle
           const radius = 5;
           const speed = 0.2;
-          const angle = speed * elapsedTime + mouseDeltaRef.current;
+          const angle = speed * elapsedTime + 70 + mouseDeltaRef.current;
           const x = center.x + radius * Math.cos(angle);
           const z = center.z + radius * Math.sin(angle);
 
