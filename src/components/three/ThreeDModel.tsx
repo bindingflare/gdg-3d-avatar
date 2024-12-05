@@ -46,6 +46,10 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
     model.scale.setScalar((1 / maxSize) * scaleFactor);
   };
 
+  function isMesh(object: THREE.Object3D): object is THREE.Mesh {
+    return (object as THREE.Mesh).isMesh !== undefined;
+  }
+
   // Scene creation (with dispenser model)
   useEffect(() => {
     // Set up scene, camera, and renderer
@@ -61,6 +65,9 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
     cameraRef.current = camera;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true });
+    renderer.setClearColor(0xFFFFFF, 0);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Optional: Choose shadow map type
     renderer.setSize(window.innerWidth, window.innerHeight);
     rendererRef.current = renderer;
 
@@ -77,6 +84,26 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
       centerAndPositionModel(model);
       setupInitialCamera(camera, model);
       addLighting(scene);
+
+      model.traverse((object) => {
+        if (isMesh(object)) {
+          // Enable shadow casting and receiving
+          object.castShadow = true;
+          object.receiveShadow = true;
+
+          const material = object.material;
+          if (material instanceof THREE.MeshPhysicalMaterial) {
+            material.transparent = true; // Enable transparency
+            material.opacity = 0.3;      // Adjust opacity as needed
+            material.transmission = 0.9; // Adjust transmission for glass effect
+            material.roughness = 0.1;    // Adjust roughness for desired effect
+            material.metalness = 0;      // Typically low for glass
+            material.envMapIntensity = 1; // Ensure environment map intensity is set
+            material.side = THREE.DoubleSide; // Consider double-sided rendering for thin glass
+          }
+        
+        }
+      });
 
       // Render loop
       animate();
@@ -104,8 +131,9 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
       const light = new THREE.AmbientLight(0xffffff, 1);
       scene.add(light);
 
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
       directionalLight.position.set(1, 1, 1).normalize();
+      directionalLight.castShadow = true;
       scene.add(directionalLight);
     };
 
@@ -218,6 +246,14 @@ const ThreeDModel: React.FC<ThreeDModelProps> = ({
         // Center and position the new model
         centerAndPositionModel(newModel);
         newModel.position.add(new THREE.Vector3(1, 0, 3));
+
+        newModel.traverse((object) => {
+          if (isMesh(object)) {
+            // Enable shadow casting and receiving
+            object.castShadow = true;
+            object.receiveShadow = true;
+          }
+        });
 
         // Calculate the center of the new model for accurate camera focus
         const box = new THREE.Box3().setFromObject(newModel);
